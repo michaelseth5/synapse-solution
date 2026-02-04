@@ -1,5 +1,30 @@
 Expanded Technical Explanation:
 Agentic AI Hub - Interactive Dashboard Demo
+
+
+
+
+
+<img width="1500" height="1062" alt="0 (2)" src="https://github.com/user-attachments/assets/e1d89b1c-f612-4b6e-9c17-3836a0f751b4" />
+
+
+<img width="664" height="1252" alt="0 (1)" src="https://github.com/user-attachments/assets/c48f08e0-5d31-4490-8cfa-cd2eba509b22" />
+
+
+
+<img width="1600" height="1033" alt="0" src="https://github.com/user-attachments/assets/d012c05a-1715-4e35-be5a-47b0cda3fc02" />
+
+
+
+
+<img width="490" height="679" alt="image (5)" src="https://github.com/user-attachments/assets/52d988f6-7156-4e24-ba6b-bd1e8436bedb" />
+
+
+
+
+
+
+
 Project Context:
 I developed a full-stack demonstration platform for an Agentic AI Hub—a centralized workspace where autonomous AI agents collaborate across departments to streamline decision-making. The goal was to make abstract AI concepts tangible by showing how finance, sales, and operations teams could work in real-time within a single unified interface.
 Technical Implementation:
