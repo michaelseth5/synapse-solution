@@ -32,5 +32,5 @@ export function validateEvent(input: unknown): {ok: true; event: WorkspaceEvent}
   if (typeof e.message !== 'string' || e.message.trim().length < 1 || e.message.length > 500) return {ok:false,error:'Message must be 1–500 characters'};
   if (typeof e.actor !== 'string' || e.actor.length > 80) return {ok:false,error:'Invalid actor'};
   const priority=e.priority as Priority;
-  return {ok:true,event:{ id:crypto.randomUUID(), type:'alert', department:e.department as Department, priority, targetDepartments:routingFor(priority,e.department as Department), message:e.message.trim(), actor:e.actor, timestamp:new Date().toISOString() }};
+  return {ok:true,event:{ id:crypto.randomUUID(), type:e.type === 'scenario' ? 'scenario' : 'alert', department:e.department as Department, priority, targetDepartments:routingFor(priority,e.department as Department), message:e.message.trim(), actor:e.actor, timestamp:new Date().toISOString() }};
 }
