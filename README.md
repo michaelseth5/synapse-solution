@@ -71,3 +71,16 @@ Styling: Tailwind CSS for responsive design
 Data Visualization: Recharts or Chart.js for interactive graphs
 State Management: React Context API or Zustand
 Real-time Updates: WebSockets or Server-Sent Events (SSE)
+
+
+## Functional workspace (feature branch)
+
+Open `/workspace` after running `npm install && npm run dev`. Features:
+
+- Cross-tab server-sent events (SSE), emitted by `POST /api/events` and delivered by `GET /api/events`.
+- Priority routing: normal alerts route to origin, high alerts to the other two departments, critical alerts to all three.
+- Zustand state for department, role simulation, event list, and scenario inputs.
+- Recharts comparisons of baseline and user-adjusted revenue/cost/profit, with deterministic calculations and Vitest coverage.
+- Run `npm test` to execute scenario and event-routing tests.
+
+**Scope and limitations:** This is a proof-of-concept. The event bus is in-memory and process-local, so it cannot guarantee delivery between multiple server instances, nor persistence after a restart. The demo role selector provides client-side UI restrictions, not secure authorization; `POST /api/events` is intentionally unauthenticated. Use only synthetic data. Before production, add authentication, server-validated role-based access, persistent event storage, a shared broker (such as Redis), rate limits, an audit trail, and integration tests. Historical case-competition metrics are not established by this demo. Earlier pages contain synthetic and illustrative statistics, not measured production telemetry. The existing chatbot interfaces include simulated responses; the new workspace does not represent them as model-backed agents.
