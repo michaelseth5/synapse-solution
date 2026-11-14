@@ -1,5 +1,6 @@
 'use client';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { useState } from 'react';
 import { calculateScenario, DEFAULT_SCENARIO, type ScenarioInputs } from '@/lib/workspace';
 import { useWorkspace } from '@/lib/workspace-store';
 const fields: Array<{key:keyof ScenarioInputs;label:string;min:number;max:number;step:number}> = [
@@ -13,7 +14,17 @@ const fields: Array<{key:keyof ScenarioInputs;label:string;min:number;max:number
 ];
 const money=(n:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
 export function WorkspaceScenarios() {
-  const {inputs,setInputs}=useWorkspace();
+  const {inputs,setInputs,department,role}=useWorkspace();
+  const [shareStatus,setShareStatus]=useState('');
+  async function shareScenario(){
+    setShareStatus('Publishing...');
+    try {
+      const result=calculateScenario(inputs);
+      const response=await fetch('/api/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({department,priority:result.profitDelta<0?'high':'normal',actor:role+' demo',type:'scenario',message:'Scenario: projected revenue '+money(result.revenue)+', operating profit '+money(result.operatingProfit)+', profit change '+money(result.profitDelta)})});
+      if(!response.ok) throw new Error('Could not share scenario');
+      setShareStatus('Scenario published to the routed department feeds.');
+    } catch(e){setShareStatus(e instanceof Error?e.message:'Could not share scenario');}
+  }
   const result=calculateScenario(inputs);
   const base=calculateScenario(DEFAULT_SCENARIO);
   const chart=[
@@ -35,6 +46,7 @@ export function WorkspaceScenarios() {
       <div className="rounded bg-violet-50 p-4"><div className="text-sm">Operations · hiring cost</div><div className="text-xl font-semibold">{money(result.hiringCost)}</div></div>
       <div className="rounded bg-violet-50 p-4"><div className="text-sm">Finance · operating cash flow proxy</div><div className="text-xl font-semibold">{money(result.cashFlow)}</div></div>
     </div>
+    <div className="flex flex-wrap items-center gap-3"><button onClick={shareScenario} disabled={role==='viewer'} className="rounded bg-violet-700 px-4 py-2 text-white disabled:opacity-40">Share scenario to department feeds</button><span role="status" className="text-sm text-slate-600">{shareStatus}</span></div>
     <p className="text-xs text-slate-500">Simplified annual illustration. Cash flow is approximated using operating profit; financing, taxes, working capital, and depreciation are excluded.</p>
   </section>;
 }
